@@ -11,7 +11,7 @@ class ProductData extends BaseModel
     // Basic product data
 
     /**
-     * Your product’s unique identifier. Max 50 characters.
+     * The user-created unique ID that represents the product. Only Unicode characters are accepted.
      *
      * - Use a unique value for each product. Use the product's SKU where possible.
      * - Keep the ID the same when updating your data.
@@ -19,8 +19,9 @@ class ProductData extends BaseModel
      * - Use the same ID for the same product - across countries or languages.
      *
      * @required
-     * @maxlen 50
+     * @maxlen 127
      * @element g:id
+     * @example DS0294-L
      */
     public string $id;
 
@@ -90,12 +91,7 @@ class ProductData extends BaseModel
     public string $imageLink;
 
     /**
-     * The URL of an additional image for your product.
-     *
-     * - Must meet the requirements for the image link [image_link] attribute with these exceptions:
-     *     - The image can include product staging and show the product in use
-     *     - Graphics or illustrations can be included
-     * - Submit up to 10 additional product images by including this attribute multiple times
+     * The URL(s) of additional images for your product. Must be comma separated.
      *
      * @var string|array|null
      * @optional
@@ -131,18 +127,6 @@ class ProductData extends BaseModel
     public string $availability = ProductAvailability::InStock;
 
     /**
-     * The date a preordered or backordered product becomes available for delivery.
-     *
-     * Required if product availability is set to preorder or backorder.
-     *
-     * - Use this attribute if your product's availability is set to preorder or backorder. Provide a value up to 1 year in the future.
-     * - The availability date should also be added to the product’s landing page and be clear to your customers (for example, “May 6, 2023”). If an exact date can’t be provided, you can use an estimated date (for example, “May 2023”).
-     *
-     * @element g:availability_date
-     */
-    public ?\DateTime $availabilityDate = null;
-
-    /**
      * Your product's price (numeric with ISO 4217 currency).
      *
      * - Accurately submit the product's price and currency, and match with the price from your landing page and at checkout
@@ -163,7 +147,6 @@ class ProductData extends BaseModel
      * @element g:price
      */
     public string $price;
-
 
     /**
      * Your product's special / sale price (numeric with ISO 4217 currency).
@@ -196,7 +179,7 @@ class ProductData extends BaseModel
      *
      * @example Apparel & Accessories > Clothing > Outerwear > Coats & Jackets
      * @see https://support.google.com/merchants/answer/1705911 (Google product taxonomy)
-     * @element g:product_type
+     * @element g:google_product_category
      */
     public ?string $googleProductCategory = null;
 
@@ -214,6 +197,23 @@ class ProductData extends BaseModel
 
     // -----------------------------------------------------------------------------------------------------------------
     // Product identifiers
+
+    /**
+     * The brand name of the product generally recognized by consumers.
+     *
+     * - Providing the correct brand for a product will ensure the best user experience and result in the best performance.
+     * - Only provide your own brand name as the brand if you manufacture the product or if your product falls into a generic brand category. For example, you could submit your own brand name as the brand if you sell private-label products or customized jewelry.
+     * - For products that truly do not have a brand (for example, a vintage dress without a label, generic electronics accessories, etc.) leave this field empty.
+     * - Don't submit values such as "N/A", "Generic", "No brand", or "Does not exist".
+     * - For compatible products:
+     *      - Submit the GTIN and brand from the manufacturer who actually built the compatible product
+     *      - Don't provide the Original Equipment Manufacturer (OEM) brand to indicate that your product is compatible with or a replica of the OEM brand's product
+     *
+     * @example Google
+     * @maxlen 70
+     * @element brand
+     */
+    public string $brand;
 
     // -----------------------------------------------------------------------------------------------------------------
     // Detailed product description
@@ -240,12 +240,6 @@ class ProductData extends BaseModel
 
     // -----------------------------------------------------------------------------------------------------------------
     // Tax
-
-
-    // -----------------------------------------------------------------------------------------------------------------
-    // Init
-
-
 
     // -----------------------------------------------------------------------------------------------------------------
     // Convert helper
